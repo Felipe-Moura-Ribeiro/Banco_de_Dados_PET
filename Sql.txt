@@ -1,0 +1,52 @@
+CREATE TABLE Pessoa (
+    matricula INT PRIMARY KEY,
+    nome VARCHAR(255),
+    telefone VARCHAR(20),
+    email VARCHAR(255),
+    iddepartamento INT,
+    FOREIGN KEY (iddepartamento) REFERENCES Departamento(idsetor)
+);
+
+-- Tabela Departamento
+CREATE TABLE Departamento (
+    idsetor INT PRIMARY KEY,
+    nomesetor VARCHAR(255)
+);
+
+-- Tabela Item
+CREATE TABLE Item (
+    codigo INT PRIMARY KEY,
+    nome VARCHAR(255),
+    quantidade INT,
+    valorunit DECIMAL(10, 2),
+    prevdevol DATE,
+    idpessoa INT,
+    FOREIGN KEY (idpessoa) REFERENCES Pessoa(matricula)
+);
+
+-- Tabela Empréstimo
+CREATE TABLE Emprestimo (
+    dataemprest DATE,
+    datadevol DATE,
+    quantia INT,
+    matricula_pessoa INT,
+    codigo_item INT,
+    PRIMARY KEY (dataemprest, matricula_pessoa, codigo_item),
+    FOREIGN KEY (matricula_pessoa) REFERENCES Pessoa(matricula),
+    FOREIGN KEY (codigo_item) REFERENCES Item(codigo)
+);
+
+-- Tabela Tipo
+CREATE TABLE Tipo (
+    idtipo INT PRIMARY KEY,
+    nometipo VARCHAR(255)
+);
+
+-- Tabela Classifica (Relacionamento entre Item e Tipo)
+CREATE TABLE Classifica (
+    codigo_item INT,
+    idtipo INT,
+    PRIMARY KEY (codigo_item, idtipo),
+    FOREIGN KEY (codigo_item) REFERENCES Item(codigo),
+    FOREIGN KEY (idtipo) REFERENCES Tipo(idtipo)
+);
